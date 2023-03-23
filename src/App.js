@@ -5,13 +5,21 @@ import { getAnectodes } from './request'
 
 const App = () => {
 
-  const result = useQuery("anecdotes",getAnectodes)
+  const result = useQuery("anecdotes",getAnectodes,{
+    retry:false
+  })
+  console.log(result)
   
   
-
-  if(result.isLoading){
+if(result.isLoading){
     return <h1>loading data</h1>
-  }
+   
+  } 
+
+  if(result.isError){
+    return <h1>Anecdote service not available due to problems in server</h1>
+   
+  } 
 
   const anecdotes = result.data
   console.log(anecdotes)
