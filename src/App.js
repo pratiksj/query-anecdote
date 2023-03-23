@@ -7,8 +7,13 @@ const App = () => {
   const queryClient = useQueryClient()
 
   const updateAnecdoteMutation = useMutation(updateAnecdote, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('anecdotes')
+    onSuccess: (updatedAnecdote) => {
+      const anecdotes = queryClient.getQueryData('anecdotes')
+      console.log(anecdotes, "this is last ")
+
+      queryClient.setQueryData('anecdotes',anecdotes.map((anecdote)=>{
+        return anecdote.id===updatedAnecdote.id? updatedAnecdote: anecdote
+      }))
     },
   })
 
