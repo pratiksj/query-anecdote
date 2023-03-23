@@ -1,19 +1,25 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
+import { useQuery } from 'react-query'
+import { getAnectodes } from './request'
 
 const App = () => {
+
+  const result = useQuery("anecdotes",getAnectodes)
+  
+  
+
+  if(result.isLoading){
+    return <h1>loading data</h1>
+  }
+
+  const anecdotes = result.data
+  console.log(anecdotes)
 
   const handleVote = (anecdote) => {
     console.log('vote')
   }
 
-  const anecdotes = [
-    {
-      "content": "If it hurts, do it more often",
-      "id": "47145",
-      "votes": 0
-    },
-  ]
 
   return (
     <div>
