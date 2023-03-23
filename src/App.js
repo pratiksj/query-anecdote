@@ -1,7 +1,7 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery } from 'react-query'
-import { getAnectodes } from './request'
+import { getAnectodes} from './request'
 
 const App = () => {
 
