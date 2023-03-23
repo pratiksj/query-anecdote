@@ -1,17 +1,23 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-import { useQuery } from 'react-query'
-import { getAnectodes} from './request'
+import { useQuery,useMutation, useQueryClient } from 'react-query'
+import { getAnectodes,updateAnecdote} from './request'
 
 const App = () => {
+  const queryClient = useQueryClient()
+
+  const updateAnecdoteMutation = useMutation(updateAnecdote, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('anecdotes')
+    },
+  })
+
 
   const result = useQuery("anecdotes",getAnectodes,{
     retry:false
   })
-  console.log(result)
   
-  
-if(result.isLoading){
+  if(result.isLoading){
     return <h1>loading data</h1>
    
   } 
@@ -23,9 +29,12 @@ if(result.isLoading){
 
   const anecdotes = result.data
   console.log(anecdotes)
-
+  
+  
   const handleVote = (anecdote) => {
-    console.log('vote')
+    console.log(anecdote,"handlevote")
+    updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes+1 })
+    
   }
 
 
