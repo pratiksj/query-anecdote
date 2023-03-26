@@ -14,9 +14,17 @@ const newAnecdoteMutation = useMutation(createAnecdote,{
     console.log(newAnecdote,"i am new anecdote")
     const notes = queryClient.getQueryData('anecdotes')
       queryClient.setQueryData('anecdotes', notes.concat(newAnecdote))
-
-        
-  },
+      dispatch({type:"SET_NOTIFICATION",message:`${newAnecdote.content} has added`})
+      setTimeout(()=>{
+        dispatch({type:"CLEAR_NOTIFICATION"})
+      },2000);
+      },
+      onError:(error)=>{
+        dispatch({type:"SET_NOTIFICATION",message:error.response.data.error})
+        setTimeout(()=>{
+          dispatch({type:"CLEAR_NOTIFICATION"})
+        },2000)
+      }
 })
 
 
@@ -24,19 +32,19 @@ const newAnecdoteMutation = useMutation(createAnecdote,{
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    //newAnecdoteMutation.mutate({content,votes:0})
-    try{
-      await newAnecdoteMutation.mutateAsync({content,votes:0})
-      dispatch({type:"SET_NOTIFICATION",message:`${content} has added`})
-      setTimeout(()=>{
-        dispatch({type:"CLEAR_NOTIFICATION"})
-      },2000)
-    } catch(error){
-      dispatch({type:"SET_NOTIFICATION",message:error.response.data.error})
-      setTimeout(()=>{
-        dispatch({type:"CLEAR_NOTIFICATION"})
-      },2000)
-    }
+    newAnecdoteMutation.mutate({content,votes:0})
+    // try{
+    //   await newAnecdoteMutation.mutateAsync({content,votes:0})
+    //   dispatch({type:"SET_NOTIFICATION",message:`${content} has added`})
+    //   setTimeout(()=>{
+    //     dispatch({type:"CLEAR_NOTIFICATION"})
+    //   },2000)
+    // } catch(error){
+    //   dispatch({type:"SET_NOTIFICATION",message:error.response.data.error})
+    //   setTimeout(()=>{
+    //     dispatch({type:"CLEAR_NOTIFICATION"})
+    //   },2000)
+    // }
     
 }
 
