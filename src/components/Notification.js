@@ -1,8 +1,10 @@
-import { useContext } from 'react'
-import AnecdoteContext from '../AnecdoteContext'
+//import { useContext } from 'react'
+//import AnecdoteContext from '../AnecdoteContext'
+import { useMessageValue } from '../AnecdoteContext'
 
 const Notification = () => {
-  const [notification,dispatch] = useContext(AnecdoteContext)
+  //const [notification,dispatch] = useContext(AnecdoteContext)
+  const notification = useMessageValue()
   console.log(notification,"first notification")
 
   const style = {

@@ -1,4 +1,4 @@
-import { createContext,useReducer } from "react";
+import { createContext,useContext,useReducer } from "react";
 
 const anecdoteReducer=(state,action)=>{
     switch(action.type){
@@ -17,6 +17,16 @@ case "SET_NOTIFICATION":
 
 const AnecdoteContext =createContext()
 const initalState = null
+
+export const useMessageValue=()=>{
+    const messageAndValue = useContext(AnecdoteContext)
+    return messageAndValue[0]
+}
+
+export const useMessageDispatch=()=>{
+    const messageAndDispatch = useContext(AnecdoteContext)
+    return messageAndDispatch[1]
+}
 
 
 export const AnectoteContextProvider =(props)=>{
