@@ -8,7 +8,7 @@ const validator = (request, response, next) => {
 
   const { content } = request.body
 
-  if ((request.method==='POST' || request.method==='PUT') && (!content || content.length<5) ) {
+  if (request.method==='POST' && (!content || content.length<5) ) {
     return response.status(400).json({
       error: 'too short anecdote, must have length 5 or more'
     })
@@ -17,10 +17,21 @@ const validator = (request, response, next) => {
   }
 }
 
+// const errorHandler = (error, request, response, next) => {
+//   if(error&&error.status===400){
+//     response.status(400).json({error:error.message})
+//   }
+//   else {
+//     next()
+//   }
+
+// }
+
 server.use(middlewares)
 server.use(jsonServer.bodyParser)
 server.use(validator)
 server.use(router)
+//server.use(errorHandler)
 
 server.listen(3001, () => {
   console.log('JSON Server is running')

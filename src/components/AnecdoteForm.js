@@ -8,24 +8,35 @@ const AnecdoteForm = ({type}) => {
   const [notification,dispatch] = useContext(AnecdoteContext)
 
 const queryClient = useQueryClient()
+
 const newAnecdoteMutation = useMutation(createAnecdote,{
   onSuccess: (newAnecdote) => {
     console.log(newAnecdote,"i am new anecdote")
     const notes = queryClient.getQueryData('anecdotes')
       queryClient.setQueryData('anecdotes', notes.concat(newAnecdote))
-      dispatch({type:"SET_NOTIFICATION",message:`${newAnecdote.content} has added`})
-      setTimeout(()=>{
-        dispatch({type:"CLEAR_NOTIFICATION"})
-      },2000)
-  
+
+        
   },
 })
 
-  const onCreate = (event) => {
+
+  const onCreate = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    newAnecdoteMutation.mutate({content,votes:0})
+    //newAnecdoteMutation.mutate({content,votes:0})
+    try{
+      await newAnecdoteMutation.mutateAsync({content,votes:0})
+      dispatch({type:"SET_NOTIFICATION",message:`${content} has added`})
+      setTimeout(()=>{
+        dispatch({type:"CLEAR_NOTIFICATION"})
+      },2000)
+    } catch(error){
+      dispatch({type:"SET_NOTIFICATION",message:error.response.data.error})
+      setTimeout(()=>{
+        dispatch({type:"CLEAR_NOTIFICATION"})
+      },2000)
+    }
     
 }
 
@@ -41,3 +52,6 @@ const newAnecdoteMutation = useMutation(createAnecdote,{
 }
 
 export default AnecdoteForm
+
+
+
