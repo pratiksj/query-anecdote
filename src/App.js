@@ -2,18 +2,25 @@ import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery,useMutation, useQueryClient } from 'react-query'
 import { getAnectodes,updateAnecdote} from './request'
+import { useContext } from 'react'
+import AnecdoteContext from './AnecdoteContext'
 
 const App = () => {
+  const [notification,dispatch] = useContext(AnecdoteContext)
   const queryClient = useQueryClient()
 
   const updateAnecdoteMutation = useMutation(updateAnecdote, {
     onSuccess: (updatedAnecdote) => {
+      console.log(updatedAnecdote,"this me upatenotification")
       const anecdotes = queryClient.getQueryData('anecdotes')
-      console.log(anecdotes, "this is last ")
 
       queryClient.setQueryData('anecdotes',anecdotes.map((anecdote)=>{
         return anecdote.id===updatedAnecdote.id? updatedAnecdote: anecdote
       }))
+      dispatch({type:"SET_NOTIFICATION",message:`${updatedAnecdote.content} has been liked`})
+      setTimeout(()=>{
+        dispatch({type:"CLEAR_NOTIFICATION"})
+      },2000) 
     },
   })
 
