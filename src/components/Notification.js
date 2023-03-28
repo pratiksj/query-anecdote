@@ -1,26 +1,22 @@
 //import { useContext } from 'react'
 //import AnecdoteContext from '../AnecdoteContext'
-import { useMessageValue } from '../AnecdoteContext'
+import { useMessageValue } from "../AnecdoteContext";
 
 const Notification = () => {
   //const [notification,dispatch] = useContext(AnecdoteContext)
-  const notification = useMessageValue()
-  console.log(notification,"first notification")
+  const notification = useMessageValue();
+  console.log(notification, "first notification");
 
   const style = {
-    border: 'solid',
+    border: "solid",
     padding: 10,
     borderWidth: 1,
-    marginBottom: 5
-  }
-  
-if (!notification) return null
+    marginBottom: 5,
+  };
 
-  return (
-    <div style={style}>
-      {notification}
-    </div>
-  )
-}
+  if (!notification) return null;
 
-export default Notification
+  return <div style={style}>{notification}</div>;
+};
+
+export default Notification;
