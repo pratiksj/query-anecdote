@@ -6,20 +6,25 @@ console.log(AnecdoteContext, "i am AnecdoteContext");
 
 export const useMessageValue = () => {
   const messageAndValue = useContext(AnecdoteContext);
-  return messageAndValue[0];
+  return messageAndValue.notification;
 };
 
 export const useMessageDispatch = () => {
   const messageAndDispatch = useContext(AnecdoteContext);
-  return messageAndDispatch[1];
+  return messageAndDispatch.dispatch;
 };
 
 export const AnectoteContextProvider = (props) => {
   // const [notification, dispatch] = useReducer(anecdoteReducer, initalState);
   const [notification, dispatch] = useState("");
   console.log(notification, "this is from context notification");
+  const contextValue = {
+    notification,
+    dispatch,
+  };
   return (
-    <AnecdoteContext.Provider value={[notification, dispatch]}>
+    // <AnecdoteContext.Provider value={[notification, dispatch]}>
+    <AnecdoteContext.Provider value={contextValue}>
       {props.children}
     </AnecdoteContext.Provider>
   );
